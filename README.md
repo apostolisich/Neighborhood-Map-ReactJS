@@ -8,4 +8,4 @@ A project made in React.js. It implements Google Maps and the Foursquare API whi
 2. Use the `cd` command to move into the project directory if not already there.
 3. Run `npm start`.
 
-The default browser of your system should load with the app running. If not then visit http://localhost:3000 [`http://localhost:3000`].
+The default browser of your system should load with the app running. If not then visit http://localhost:3000.
