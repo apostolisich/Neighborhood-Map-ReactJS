@@ -5,6 +5,9 @@ import escapeRegExp from 'escape-string-regexp'
 import './App.css';
 
 class App extends Component {
+  /** State of the Component. It includes the array of markers 
+   *that will render when the app loads 
+   */
   state = {
     query: '',
     clickedMarker: null,
@@ -42,6 +45,9 @@ class App extends Component {
     ]
   }
 
+  /** Those styles are used for the burger menu
+   * Menu implemented from: https://github.com/negomi/react-burger-menu 
+   */
   styles = {
     bmBurgerButton: {
         position: 'fixed',
@@ -59,14 +65,30 @@ class App extends Component {
     }
   }
 
+  /** This method updates the query property inside the state object when it's 
+   * changed by the filter markers input field.
+   */
   updateQuery = (query) => (
     this.setState({ query: query.trim() })
   )
 
-  setClickedMarker = (marker) => (
+  /** This method updates the clickedMarker property with the one clicked
+   * from the available markers list view.
+   */
+  updateClickedMarker = (marker) => (
     this.setState({ clickedMarker: marker })
   )
 
+  /** The render method of the component. This is used to render all the elements
+   * of the component. 
+   * The showing markers variable is used in order to filter
+   * the markers of the map and the listview when the filter field is used.
+   * 
+   * The render method includes <Menu /> which is an open source burger menu react
+   * component available in GitHub: https://github.com/negomi/react-burger-menu.
+   * It also includes the <Map /> component which is another open source google 
+   * maps react component available here: https://github.com/google-map-react/google-map-react
+   */
   render() {
     let showingMarkers
     if(this.state.query) {
@@ -79,23 +101,23 @@ class App extends Component {
     return (
       <div>
         <div className="header-class">
-        <Menu width={"300px"} styles={this.styles}>
-          <h1>Thessaloniki</h1>
-          <input 
-            type="text" 
-            placeholder="Filter Markers..." 
-            value={this.state.query} 
-            onChange={(event) => (this.updateQuery(event.target.value))}/>
+          <Menu tabIndex="-1" role="navigation" aria-label="filter options" width={"300px"} styles={this.styles}>
+            <h1>Thessaloniki</h1>
+            <input 
+              type="text" 
+              placeholder="Filter Markers..." 
+              value={this.state.query} 
+              onChange={(event) => (this.updateQuery(event.target.value))}/>
 
-          <ul>
-            {showingMarkers.map(marker => (
-              <li key={marker.id} onClick={(event) => this.setClickedMarker(marker)}>{marker.title}</li>
-            ))}
-          </ul>
-        </Menu>
+            <ul role="menu" aria-label="List with all available markers" tabIndex="-1">
+              {showingMarkers.map(marker => (
+                <li tabIndex="0" role="menuitem" key={marker.id} onClick={(event) => this.updateClickedMarker(marker)}>{marker.title}</li>
+              ))}
+            </ul>
+          </Menu>
         </div>
         
-        <Map markers={showingMarkers} clickedMarker={this.state.clickedMarker}/>
+        <Map role="application" aria-label="Map with restaurant markers" markers={showingMarkers} clickedMarker={this.state.clickedMarker}/>
       </div>
       
     );
